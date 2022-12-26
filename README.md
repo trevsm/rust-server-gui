@@ -4,7 +4,6 @@
 
 A minimal boilerplate for [React](https://reactjs.org/) + [Electron](http://electronjs.org/), built with [Parcel](https://parceljs.org/). 📦🚀
 
-
 ## 🏃‍♂️ Getting Started
 
 Run the following commands to start the project:
@@ -13,7 +12,7 @@ Run the following commands to start the project:
 - `npm i`
 - `npm run start`
 
-*The `electron` command in the `package.json` file is only used internally by the boilerplate to launch electron.*
+_The `electron` command in the `package.json` file is only used internally by the boilerplate to launch electron._
 
 ## 🏗️ How to Build the Project
 
@@ -27,9 +26,8 @@ Run `npm run build`. This will create a `dist` folder with:
 - 📁 `public`: Holds all your public assets, such as styles, images or fonts. Also holds the `index.html`
 - 📁 `scripts`: Holds the `start` and `build` script. This is where you can configure the setup
 - 📂 `src`
-    - 📁 `components`: A place to hold your React components
-    - 📁 `electron`: Includes the start scripts for a `dev` and `prod` Electron build
-
+  - 📁 `components`: A place to hold your React components
+  - 📁 `electron`: Includes the start scripts for a `dev` and `prod` Electron build
 
 ## 📚 Further Guide
 
