@@ -1,12 +1,12 @@
-const packager = require("electron-packager");
-const electronInstaller = require("electron-winstaller");
+const packager = require("electron-packager")
+const electronInstaller = require("electron-winstaller")
 
 async function build(options) {
-  const appPaths = await packager(options);
+  const appPaths = await packager(options)
 
   console.log(
     `✅ App build ready in: ${appPaths.join("\n")}, creating installer...`
-  );
+  )
 
   try {
     await electronInstaller.createWindowsInstaller({
@@ -15,11 +15,11 @@ async function build(options) {
       authors: "Weekly Webtips",
       description: "📦🚀 Electron app using React, built with Parcel",
       exe: "app.exe",
-    });
+    })
 
-    console.log("💻 Installer is created in dist/installer");
+    console.log("💻 Installer is created in dist/installer")
   } catch (e) {
-    console.log(`The following error occured: ${e.message}`);
+    console.log(`The following error occured: ${e.message}`)
   }
 }
 
@@ -31,4 +31,4 @@ build({
   asar: true, // asar is a format for packing your app's source code into a single file
   platform: "win32", // win32, darwin, linux
   arch: "ia32", // ia32, x64, armv7l, all
-});
+})
