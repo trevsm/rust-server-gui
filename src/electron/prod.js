@@ -2,13 +2,15 @@ const { app, BrowserWindow } = require("electron")
 const createWindow = () => {
   const window = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: true, // used for node modules
-      nodeIntegrationInWorker: true, // used for node modules in web workers
+      nodeIntegration: true,
     },
   })
+
+  window.webContents.openDevTools()
 
   window.loadFile("build/index.html")
 }
 
 app.whenReady().then(createWindow)
+
 app.on("window-all-closed", () => app.quit())
