@@ -1,22 +1,19 @@
-import React, { useEffect } from "react"
+import React from "react"
+import { useLogs } from "./useLogs"
+import { red, blue, green } from "@mui/material/colors"
 
-export const useProcess = (logState, { onClose, onError, onData }) => {
-  // {color:string, text:string}[]
-  const [logs, setLogs] = logState
+export const useProcess = ({ onClose, onError, onData }) => {
+  const { logs, addLog, resetLogs } = useLogs()
 
   const process = (command) => {
     if (logs.length > 0) {
-      setLogs([])
+      resetLogs()
     }
 
-    // add command to logs
-    setLogs((prevLogs) => [
-      ...prevLogs,
-      {
-        text: "$ " + command,
-        color: "#a7f3ff",
-      },
-    ])
+    addLog({
+      text: "$ " + command,
+      color: blue[400],
+    })
 
     // execute ls command using child_process
     const { exec } = require("child_process")
@@ -24,36 +21,19 @@ export const useProcess = (logState, { onClose, onError, onData }) => {
 
     // on data event, print the output
     p.stdout.on("data", (data) => {
-      setLogs((prevLogs) => [
-        ...prevLogs,
-        {
-          text: data,
-        },
-      ])
+      addLog({ text: data })
       onData && onData(data)
     })
 
     // on error event, print the error
     p.stderr.on("data", (data) => {
-      setLogs((prevLogs) => [
-        ...prevLogs,
-        {
-          text: data,
-          color: "red",
-        },
-      ])
+      addLog({ text: data, color: red[400] })
       onError && onError(data)
     })
 
     // on close event, print the exit code
     p.on("close", (code) => {
-      setLogs((prevLogs) => [
-        ...prevLogs,
-        {
-          text: `Process exited with code ${code}`,
-          color: "green",
-        },
-      ])
+      addLog({ text: `Process exited with code ${code}`, color: green[400] })
       onClose && onClose(code)
     })
   }

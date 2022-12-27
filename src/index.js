@@ -3,18 +3,18 @@ import ReactDOM from "react-dom"
 import App from "./app/App"
 import { StyledEngineProvider } from "@mui/material/styles"
 import { createTheme } from "@mui/material/styles"
-import { blue, green, red, orange } from "@mui/material/colors"
+import { blue, green, red, orange, grey } from "@mui/material/colors"
 import { ThemeProvider } from "@mui/material/styles"
 
 const theme = createTheme({
   palette: {
-    start: {
+    primary: {
       main: blue[400],
       light: blue[100],
       dark: blue[500],
       contrastText: "#fff",
     },
-    restart: {
+    secondary: {
       main: green[400],
       light: green[100],
       dark: green[500],
@@ -30,6 +30,12 @@ const theme = createTheme({
       main: orange[400],
       light: orange[100],
       dark: orange[500],
+      contrastText: "#fff",
+    },
+    settings: {
+      main: grey[700],
+      light: grey[500],
+      dark: grey[800],
       contrastText: "#fff",
     },
   },

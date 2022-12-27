@@ -15,7 +15,7 @@ export default function UserInput() {
             background: "white",
           }}
         />
-        <Button variant="contained" color="start" size="small">
+        <Button variant="contained" color="primary" size="small">
           Execute
         </Button>
       </Stack>

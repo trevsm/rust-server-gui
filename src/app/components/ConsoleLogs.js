@@ -44,7 +44,16 @@ export default function ConsoleLogs() {
         <pre>
           {!(logs.length > 0)
             ? "Console is empty"
-            : logs.map((log, i) => <div key={i}>{log}</div>)}
+            : logs.map(({ text, color }, i) => {
+                if (color)
+                  return (
+                    <span key={i} style={{ color }}>
+                      {text}
+                    </span>
+                  )
+
+                return <span key={i}>{text}</span>
+              })}
         </pre>
       </Item>
     </Grid>
