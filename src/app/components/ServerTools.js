@@ -11,7 +11,7 @@ import SettingsIcon from "@mui/icons-material/Settings"
 
 export default function ServerTools() {
   const { launch, stop, restart } = useRustServer()
-  const { isRunning, isStopped } = useStatus()
+  const { isRunning, isStopped, isRestarting } = useStatus()
 
   return (
     <Grid item xs={12} height="auto">
@@ -29,7 +29,7 @@ export default function ServerTools() {
           variant="contained"
           color="primary"
           onClick={launch}
-          disabled={isRunning()}
+          disabled={isRunning() || isRestarting()}
         >
           Launch <PlayArrow />
         </Button>
@@ -49,7 +49,11 @@ export default function ServerTools() {
         >
           Stop <StopIcon />
         </Button>
-        <Button variant="contained" color="update" disabled={isRunning()}>
+        <Button
+          variant="contained"
+          color="update"
+          disabled={isRunning() || isRestarting()}
+        >
           Update <Construction />
         </Button>
         <Button variant="contained" color="settings">

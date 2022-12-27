@@ -1,16 +1,17 @@
-import React from "react"
+import React, { useState } from "react"
 import { useProcess } from "./useProcess"
 import { useStatus } from "./useStatus"
 import { useLogs } from "./useLogs"
 
 export default function useRustServer() {
-  const { setStatus, isRunning, isStopped } = useStatus()
-  const { resetLogs } = useLogs()
+  const { clearLogs } = useLogs()
+  const { setStatus, isRunning, isStopped, isRestarting } = useStatus()
+
   const currentProcess = React.useRef(null)
 
   const { process } = useProcess({
     onData: (data) => {
-      if (isStopped()) setStatus("running")
+      if (isStopped() || isRestarting()) setStatus("running")
     },
     onError: (data) => {
       if (isRunning()) setStatus("stopped")
@@ -21,8 +22,8 @@ export default function useRustServer() {
   })
 
   const launch = () => {
-    resetLogs()
-    currentProcess.current = process("ping", ["google.com"])
+    clearLogs()
+    currentProcess.current = process("ping", ["google.com", "-t", "-l", "1000"])
   }
 
   const stop = () => {
@@ -30,6 +31,7 @@ export default function useRustServer() {
   }
 
   const restart = () => {
+    setStatus("restarting")
     stop()
     setTimeout(() => launch(), 100)
   }
