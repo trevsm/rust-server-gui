@@ -11,16 +11,11 @@ const createWindow = () => {
     },
   })
 
+  window.webContents.openDevTools()
+
   window.loadFile("build/index.html")
-  window.on("closed", () => (window = null))
 }
 
 app.whenReady().then(createWindow)
 
 app.on("window-all-closed", () => app.quit())
-
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
