@@ -56,16 +56,7 @@ export const useProcess = (logState, { onClose, onError, onData }) => {
       ])
       onClose && onClose(code)
     })
-
-    return p
   }
-
-  // clean up process on unmount
-  useEffect(() => {
-    return () => {
-      process.kill()
-    }
-  }, [])
 
   return { process }
 }
