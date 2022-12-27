@@ -1,4 +1,4 @@
-# React Server GUI
+# Rust Server Admin GUI
 
 This is a GUI for server admins to more easily manage their servers.
 This allows them to start, stop, restart, and update their servers.
