@@ -10,7 +10,7 @@ import Construction from "@mui/icons-material/Construction"
 import SettingsIcon from "@mui/icons-material/Settings"
 
 export default function ServerTools() {
-  const { launch } = useRustServer()
+  const { launch, stop, restart } = useRustServer()
   const { isRunning, isStopped } = useStatus()
 
   return (
@@ -33,10 +33,20 @@ export default function ServerTools() {
         >
           Launch <PlayArrow />
         </Button>
-        <Button variant="contained" color="secondary" disabled={isStopped()}>
+        <Button
+          variant="contained"
+          color="secondary"
+          disabled={isStopped()}
+          onClick={restart}
+        >
           Restart <RestartAlt />
         </Button>
-        <Button variant="contained" color="stop" disabled={isStopped()}>
+        <Button
+          variant="contained"
+          color="stop"
+          disabled={isStopped()}
+          onClick={stop}
+        >
           Stop <StopIcon />
         </Button>
         <Button variant="contained" color="update" disabled={isRunning()}>
