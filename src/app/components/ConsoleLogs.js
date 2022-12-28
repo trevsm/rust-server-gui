@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useLogs } from "../../hooks/useLogs"
+import { useStatus } from "../../hooks/useStatus"
 import { Grid, Stack } from "@mui/material"
 import { Item } from "./Item"
 import { styled } from "@mui/system"
@@ -47,7 +48,10 @@ const ScrollStatus = styled("div")(({ theme }) => ({
 export default function ConsoleLogs() {
   const [isOverflown, setIsOverflown] = useState(false)
   const [userScrolled, setUserScrolled] = useState(false)
+
+  const { isRunning } = useStatus()
   const { logs, clearLogs } = useLogs()
+
   const logsRef = useRef(null)
 
   const checkOverflow = () => {
@@ -146,7 +150,7 @@ export default function ConsoleLogs() {
 
                 return <span key={i}>{text}</span>
               })}
-          {isOverflown && (
+          {isRunning() && isOverflown && (
             <ScrollStatus>
               {!userScrolled ? (
                 <div>Auto Scroll</div>
