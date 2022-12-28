@@ -9,7 +9,6 @@ import Construction from "@mui/icons-material/Construction"
 import SettingsIcon from "@mui/icons-material/Settings"
 import RefreshIcon from "@mui/icons-material/Refresh"
 
-// dots animation ., .., ... where the dots just change in opacity
 const AnimatedRunningDots = () => {
   const [dotCount, setDotCount] = React.useState(0)
 
