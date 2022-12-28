@@ -5,6 +5,8 @@ import { Item } from "./Item"
 import { styled } from "@mui/system"
 import { red, orange, green } from "@mui/material/colors"
 
+import _ from "lodash"
+
 const TerminalBar = styled("div")(() => ({
   background: "white",
   padding: "10px",
@@ -51,9 +53,14 @@ export default function ConsoleLogs() {
     if (!userScrolled) logsRef.current.scrollTop = logsRef.current.scrollHeight
   }, [logs])
 
-  const atBottom = () =>
-    Math.floor(logsRef.current.scrollHeight - logsRef.current.scrollTop) ===
-    logsRef.current.offsetHeight
+  const atBottom = () => {
+    const offset = logsRef.current.offsetHeight
+    return _.inRange(
+      logsRef.current.scrollHeight - logsRef.current.scrollTop,
+      offset,
+      offset + 20
+    )
+  }
 
   useEffect(() => {
     const handleScroll = () => {
