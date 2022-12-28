@@ -33,7 +33,7 @@ export default function useRustServer() {
   const restart = () => {
     setStatus("restarting")
     stop()
-    setTimeout(() => launch(), 100)
+    setTimeout(() => launch(), 1000)
   }
 
   return { launch, stop, restart }
