@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 html,
@@ -23,6 +24,11 @@ pre {
   margin: 0;
   padding: 10px;
   text-align: left;
+}
+
+pre,
+pre * {
+  user-select: text;
 }
 
 @keyframes spin {

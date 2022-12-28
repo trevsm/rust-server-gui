@@ -4,6 +4,7 @@ import { Grid, Stack } from "@mui/material"
 import { Item } from "./Item"
 import { styled } from "@mui/system"
 import { red, orange, green } from "@mui/material/colors"
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward"
 
 import _ from "lodash"
 
@@ -34,7 +35,7 @@ const TerminalBar = styled("div")(() => ({
 const ScrollStatus = styled("div")(({ theme }) => ({
   position: "absolute",
   bottom: 0,
-  right: 0,
+  right: "17px",
   padding: "5px",
   div: {
     padding: "5px 8px",
@@ -44,20 +45,32 @@ const ScrollStatus = styled("div")(({ theme }) => ({
 }))
 
 export default function ConsoleLogs() {
+  const [isOverflown, setIsOverflown] = useState(false)
   const [userScrolled, setUserScrolled] = useState(false)
   const { logs, clearLogs } = useLogs()
   const logsRef = useRef(null)
 
+  const checkOverflow = () => {
+    if (logsRef.current.scrollHeight > logsRef.current.offsetHeight)
+      setIsOverflown(true)
+    else setIsOverflown(false)
+  }
+
+  const scrollDown = () => {
+    logsRef.current.scrollTop = logsRef.current.scrollHeight
+  }
+
   useEffect(() => {
+    checkOverflow()
     // scroll to bottom of logs
-    if (!userScrolled) logsRef.current.scrollTop = logsRef.current.scrollHeight
+    if (!userScrolled) scrollDown()
   }, [logs])
 
   const atBottom = () => {
     const offset = logsRef.current.offsetHeight
     return _.inRange(
       logsRef.current.scrollHeight - logsRef.current.scrollTop,
-      offset,
+      offset - 20,
       offset + 20
     )
   }
@@ -70,9 +83,11 @@ export default function ConsoleLogs() {
     }
 
     logsRef.current.addEventListener("scroll", handleScroll)
+    window.addEventListener("resize", checkOverflow)
 
     return () => {
       logsRef.current.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("resize", checkOverflow)
     }
   }, [])
 
@@ -103,7 +118,11 @@ export default function ConsoleLogs() {
             <button style={{ backgroundColor: red[500] }} />
             <button style={{ backgroundColor: orange[500] }} />
             <button style={{ backgroundColor: green[500] }} />
-            <button className="clearConsole" onClick={clearLogs}>
+            <button
+              className="clearConsole"
+              onClick={clearLogs}
+              disabled={logs.length === 0}
+            >
               Clear Console
             </button>
           </Stack>
@@ -127,7 +146,29 @@ export default function ConsoleLogs() {
 
                 return <span key={i}>{text}</span>
               })}
-          <ScrollStatus>{!userScrolled && <div>Auto Scroll</div>}</ScrollStatus>
+          {isOverflown && (
+            <ScrollStatus>
+              {!userScrolled ? (
+                <div>Auto Scroll</div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={scrollDown}
+                >
+                  See Latest{" "}
+                  <ArrowDownwardIcon
+                    style={{
+                      fontSize: "unset",
+                    }}
+                  />
+                </div>
+              )}
+            </ScrollStatus>
+          )}
         </pre>
       </Item>
     </Grid>
