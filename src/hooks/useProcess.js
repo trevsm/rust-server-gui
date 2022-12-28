@@ -1,21 +1,15 @@
 import React from "react"
 import { useLogs } from "./useLogs"
-import { red, blue, green } from "@mui/material/colors"
+import { red, green, orange, blue, pink } from "@mui/material/colors"
 
 export const useProcess = ({ onClose, onError, onData }) => {
   const { addLog } = useLogs()
 
-  const process = (command, args) => {
-    addLog({
-      text: "$ " + command + " " + args.join(" "),
-      color: blue[400],
-    })
-
+  const process = (command, args, config) => {
     // execute ls command using child_process
     const { spawn } = require("child_process")
-    const child = spawn(command, args)
+    const child = spawn(command, args, config)
 
-    // on data event, print the output
     child.stdout.on("data", (raw) => {
       const data = raw.toString()
       addLog({ text: data })

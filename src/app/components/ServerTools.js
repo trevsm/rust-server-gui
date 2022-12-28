@@ -46,7 +46,7 @@ const AnimatedRunningDots = () => {
 }
 
 export default function ServerTools() {
-  const { launch, stop, restart } = useRustServer()
+  const { launch, stop, restart, update } = useRustServer()
   const { isRunning, isStopped, isRestarting } = useStatus()
 
   return (
@@ -107,6 +107,7 @@ export default function ServerTools() {
           variant="contained"
           color="update"
           disabled={isRunning() || isRestarting()}
+          onClick={update}
         >
           Update <Construction />
         </Button>
