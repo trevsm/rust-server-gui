@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import { Grid, TextField, Button, Stack, Checkbox } from "@mui/material"
-import { Item } from "./Item"
 
-export default function UserInput() {
+export default function UserInput({ execute }) {
+  const [command, setCommand] = useState("")
+
   return (
     <Grid item xs={12}>
       <Stack spacing={2} direction="row">
@@ -14,8 +15,15 @@ export default function UserInput() {
           style={{
             background: "white",
           }}
+          value={command}
+          onChange={(e) => setCommand(e.target.value)}
         />
-        <Button variant="contained" color="primary" size="small">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => execute(command)}
+        >
           Execute
         </Button>
       </Stack>

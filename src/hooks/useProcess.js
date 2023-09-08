@@ -1,36 +1,75 @@
-import React from "react"
+import React, { useRef } from "react"
 import { useLogs } from "./useLogs"
-import { red, green, orange, blue, pink } from "@mui/material/colors"
+import { red, green, blue } from "@mui/material/colors"
 
-export const useProcess = ({ onClose, onError, onData }) => {
+export const useProcess = ({ onClose, onError, onData, shouldLog = true }) => {
   const { addLog } = useLogs()
+  const activeProcess = useRef()
 
-  const process = (command, args, config) => {
-    // execute ls command using child_process
+  const spawnProcess = (command, args, config) => {
+    if (activeProcess.current) {
+      shouldLog &&
+        addLog({ text: "A process is already running", color: red[400] })
+      return
+    }
+
     const { spawn } = require("child_process")
     const child = spawn(command, args, config)
 
+    activeProcess.current = child
+
+    shouldLog &&
+      addLog({
+        text: `Started process: ${command} ${args.join(" ")}`,
+        color: blue[400],
+      })
+
     child.stdout.on("data", (raw) => {
       const data = raw.toString()
-      addLog({ text: data })
+      shouldLog && addLog({ text: data })
       onData && onData(data)
     })
 
-    // on error event, print the error
     child.stderr.on("data", (raw) => {
       const data = raw.toString()
-      addLog({ text: data, color: red[400] })
+      shouldLog && addLog({ text: data, color: red[400] })
       onError && onError(data)
     })
 
-    // on close event, print the exit code
     child.on("close", (code) => {
-      addLog({ text: `Process exited with code ${code}`, color: green[400] })
+      activeProcess.current = null
+      shouldLog &&
+        addLog({
+          text: `Process exited with code ${code}\n`,
+          color: green[400],
+        })
       onClose && onClose(code)
     })
-
-    return child
   }
 
-  return { process }
+  const killProcess = () => {
+    if (!activeProcess.current) {
+      shouldLog &&
+        addLog({ text: "No active process to kill\n", color: red[400] })
+      return
+    }
+
+    activeProcess.current.kill("SIGTERM")
+    activeProcess.current = null
+    shouldLog &&
+      addLog({ text: "Killed the active process\n", color: red[400] })
+  }
+
+  const writeToProcess = (data) => {
+    if (!activeProcess.current) {
+      shouldLog &&
+        addLog({ text: "No active process to write to\n", color: red[400] })
+      return
+    }
+
+    activeProcess.current.stdin.write(data + "\n")
+    shouldLog && addLog({ text: "> " + data + "\n", color: blue[400] })
+  }
+
+  return { spawnProcess, killProcess, writeToProcess }
 }
